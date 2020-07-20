@@ -1,0 +1,38 @@
+{
+    "name": "gs",
+    "description": "GScript2",
+    "homepage": "",
+    "license": "Boost",
+    "authors": [
+        "Timur Gafarov"
+    ],
+
+    "importPaths": [
+        "src"
+    ],
+
+    "dependencies": {
+		"dlib": "~master"
+    },
+
+    "buildRequirements":[
+        "allowWarnings"
+    ],
+
+    "sourcePaths": ["src"],
+    "mainSourceFile": "src/main.d",
+
+    "configurations": [
+        {
+            "name": "gs",
+            "targetType": "executable",
+            "targetName": "gs"
+        },
+        {
+            "name": "template",
+            "targetType": "executable",
+            "targetName": "deploy_template",
+            "versions": ["AppTemplate"]
+        }
+    ]
+}
