@@ -11,7 +11,7 @@ Features
 * Prototype-based OOP
 * Functions as first-class objects
 * Pass by value and pass by reference
-* Strings with full Unicode support (UTF-8)
+* Strings with Unicode support (UTF-8)
 
 Example
 -------
