@@ -39,7 +39,7 @@ func main()
 
 Standard library
 ----------------
-GScript2 comes with a small collection of general-purpose code written in it:
+GScript2 comes with a tiny collection of general-purpose code written in it:
 
 * std.core - common algorithms
 * std.array - array processing functions
