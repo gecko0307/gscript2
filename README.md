@@ -1,6 +1,6 @@
 GScript2
 ========
-GScript2 is a minimalistic prototype-oriented scripting language and accompanying VM. It is a successor of [GScript](https://github.com/gecko0307/mathom/tree/master/gscript).
+GScript2 is a prototype-oriented toy scripting language and accompanying VM. It is a successor of [GScript](https://github.com/gecko0307/mathom/tree/master/gscript).
 
 Provided code is not optimized and may contain bugs.
 

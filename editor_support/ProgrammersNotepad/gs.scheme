@@ -2,7 +2,7 @@
 <Scheme>
 	<keyword-classes>
 		<keyword-class name="gs">
-			and break continue do else for foreach func global if import in is new not null or ref return self var while
+			and break continue do else for foreach func prototype global if import in is new not null or ref return this var while
 		</keyword-class>
 	</keyword-classes>
 
