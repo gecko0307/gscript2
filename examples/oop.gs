@@ -6,6 +6,8 @@ prototype MyPrototype(x)
     {
         this.y = y;
     };
+    
+    this.foo(0);
 }
 
 func main()

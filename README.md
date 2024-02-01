@@ -1,6 +1,6 @@
 GScript2
 ========
-GScript2 is a prototype-oriented toy scripting language and accompanying VM. It is a successor of [GScript](https://github.com/gecko0307/mathom/tree/master/gscript).
+GScript2 is a prototype-oriented toy scripting language and accompanying VM. It is a successor of [GScript](https://github.com/gecko0307/mathom/tree/master/gscript). Both compiler and the runtime are written in D.
 
 Provided code is not optimized and may contain bugs.
 
@@ -119,6 +119,34 @@ func MyPrototype(x)
     return this;
 }
 ```
+
+Built-in host functions
+-----------------------
+Some of the functionality in the language is implemented in runtime using host functions (native D functions), rather than VM instructions:
+
+`assert(value)` - stops execution with a traceback if `value` is 0 or null. Otherwise does nothing and returns 0.
+
+`length(value)` - if `value` is an array, returns its length. If `value` is string, returns its character count. If `value` is null, returns 0. Otherwise returns 1.
+
+`array(values)` - constructs an array from given argument(s). If `values` is an array, returns this array as is.
+
+`new(value)` - if `value` is string, array or dictionary object, returns its copy. Otherwise returns `value` as is.
+
+`writeln(values)` - prints `values` to standard output.
+
+`sqrt(x)` - if `x` is float, returns its square root. Otherwise stops execution with a traceback.
+
+`pow(x, n)` - if `x` is float, returns its power of `n`. Otherwise stops execution with a traceback.
+
+`float(value)` - if `value` is string, parses it as a real number and returns the result. Otherwise stops execution with a traceback.
+
+`sin(x)` - if `x` is float, returns sine of `x`. Otherwise stops execution with a traceback.
+
+`cos(x)` - if `x` is float, returns cosine of `x`. Otherwise stops execution with a traceback.
+
+`typestr(value)` - returns type of `value` as a string.
+
+It is possible to add custom host functions - look into `main.d` to learn how to do it.
 
 Building standalone GScript2 applications
 -----------------------------------------
