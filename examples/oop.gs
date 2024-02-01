@@ -1,16 +1,26 @@
-func main()
+prototype MyPrototype(x)
 {
-    var MyClass;
-    MyClass.x = 10;
-    MyClass.foo = func(this, y)
+    this.x = x;
+    
+    this.foo = func(this, y)
     {
         this.y = y;
     };
+}
+
+func main()
+{
+    var obj = MyPrototype(3);
     
-    var obj = new(MyClass);
-    obj.x = 3;
     obj.foo(5);
     
-    writeln(MyClass);
-    writeln(obj);
+    if (obj.x != null)
+    {
+        writeln(obj.x);
+    }
+    
+    if (obj.y != null)
+    {
+        writeln(obj.y);
+    }
 }

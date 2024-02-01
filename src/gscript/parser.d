@@ -187,8 +187,8 @@ class Parser
         {
             reading = true;
 
-            if (lex.current == "func")
-            {    
+            if (lex.current == "func" || lex.current == "prototype")
+            {
                 lex.readNext(); 
 
                 //string funcName;
@@ -250,6 +250,10 @@ class Parser
             {
                 FunctionStatement f = parseFunction(Context(modul));
             }
+            else if (token == "prototype")
+            {
+                FunctionStatement f = parsePrototypeFunction(Context(modul));
+            }
             else if (token == "import")
             {
                 lex.readNext(); // pop import
@@ -306,11 +310,11 @@ class Parser
         if (lex.current != "func")
             error("Function expected, not \"" ~ lex.current ~ "\"");
 
-        lex.readNext(); 
+        lex.readNext();
 
         string funcName;
         if (isIdentifier(lex.current) && isValidName(lex.current))
-        {           
+        {
             funcName = lex.current;
             lex.readNext(); // pop function name
         }
@@ -341,6 +345,62 @@ class Parser
 
         return result;
     }
+    
+   /*
+    * Parse prototype function declaration
+    */
+    FunctionStatement parsePrototypeFunction(Context context)
+    {
+        if (lex.current != "prototype")
+            error("Prototype function expected, not \"" ~ lex.current ~ "\"");
+        
+        lex.readNext();
+        
+        string funcName;
+        if (isIdentifier(lex.current) && isValidName(lex.current))
+        {
+            funcName = lex.current;
+            lex.readNext(); // pop function name
+        }
+        else
+            error("Function name expected, not \"" ~ lex.current ~ "\"");
+        
+        FunctionStatement result = modul.functions[funcName];
+        currentFunc = result;
+
+        result.isPrototype = true;
+        result.name = funcName;
+        result.qualifiedName = modul.qualifiedFunctionName(funcName);
+
+        FunctionArgListStatement funcArgs;
+        if (lex.current == "(")
+        {
+            lex.readNext(); // pop left parenthesis
+            funcArgs = parseArgList(context);
+            if (lex.current != ")")
+                error("Closing parenthesis expected, not \"" ~ lex.current ~ "\"");
+            lex.readNext(); // pop right parenthesis
+        }
+        else
+            error("Argument list expected, not \"" ~ lex.current ~ "\"");
+        result.args = funcArgs;
+        
+        //string thisFullName = "this"; //funcBody.localVariable("this");
+        //writeln(thisFullName);
+        //result.addVariable(thisFullName);
+        
+        auto funcBody = cast(BlockStatement)parseFunctionBody(context, ["this"]);
+        result.fbody = funcBody;
+        
+        //funcBody.addChild(new VarDeclareStatement("this", result.address[thisFullName], null));
+        
+        string thisFullName = funcBody.localVariable("this");
+        Expression returnExpr = new VariableRefExpression(thisFullName, result.address[thisFullName]);
+        ReturnStatement implicitReturn = new ReturnStatement(funcBody, returnExpr);
+        funcBody.addChild(implicitReturn);
+
+        return result;
+    }
 
     FunctionArgListStatement parseArgList(Context context)
     {
@@ -361,7 +421,7 @@ class Parser
             lex.readNext();
 
             if (isIdentifier(name) && isValidName(name))
-            {                   
+            {
                 list.addArgument(name);
 
                 if (lex.current != ",")
@@ -377,9 +437,18 @@ class Parser
         return list;
     }
 
-    Statement parseFunctionBody(Context context)
+    Statement parseFunctionBody(Context context, string[] implicitVariables = [])
     {
         BlockStatement block = new BlockStatement(context.block);
+        
+        foreach(name; implicitVariables)
+        {
+            block.variables[name] = name;
+            string fullName = block.localVariable(name);
+            currentFunc.addVariable(fullName);
+            block.addChild(new VarDeclareStatement(name, currentFunc.address[fullName], null));
+        }
+        
         if (lex.current == "{")
         {
             lex.readNext(); // pop {
@@ -393,6 +462,7 @@ class Parser
             }
             lex.readNext(); // pop }
         }
+        
         return block;
     }
 

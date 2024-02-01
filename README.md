@@ -1,8 +1,8 @@
 GScript2
 ========
-GScript2 is a minimalistic imperative scripting language and accompanying VM. It is a successor of [GScript](https://github.com/gecko0307/mathom/tree/master/gscript).
+GScript2 is a minimalistic prototype-oriented scripting language and accompanying VM. It is a successor of [GScript](https://github.com/gecko0307/mathom/tree/master/gscript).
 
-Provided code is just a prototype. It is not optimized and may contain bugs.
+Provided code is not optimized and may contain bugs.
 
 Features
 --------
@@ -35,6 +35,12 @@ func main()
     assert(arr2:length == 5);
     writeln(arr2);
 }
+```
+
+Running the script:
+
+```
+gs script.gs
 ```
 
 Standard library
@@ -73,4 +79,53 @@ obj.foo(100);
 assert(obj.prop == 100);
 ```
 
-Currently there is no syntax for object literals.
+Objects can be created using prototype functions. They are like normal functions, but with a built-in `this` variable that can be used as an object. `this` is implicitly returned from a prototype function, if it doesn't return any value:
+
+```
+prototype MyPrototype(x)
+{
+    this.x = x;
+    
+    this.foo = func(this, y)
+    {
+        this.y = y;
+    };
+}
+
+func main()
+{
+    var obj = MyPrototype(3);
+    obj.foo(5);
+    
+    writeln(obj.x);
+    writeln(obj.y);
+}
+```
+
+The above `MyPrototype` definition is just a syntactic sugar for the following:
+
+```
+func MyPrototype(x)
+{
+    var this;
+    
+    this.x = x;
+    
+    this.foo = func(this, y)
+    {
+        this.y = y;
+    };
+    
+    return this;
+}
+```
+
+Building standalone GScript2 applications
+-----------------------------------------
+GScript2 compiles scripts to a sequence of VM instructions. This sequence is called intermediate representation (IR). You can save IR to an *.ir file and execute it instead of the script itself:
+
+`gs --ir main.gs`
+
+`gs main.ir`
+
+GScript2 runtime automatically loads `main.ir` from working directory if you don't specify an input script. So you can ship gs executable with main.ir file to end users.

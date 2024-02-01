@@ -395,6 +395,7 @@ class FunctionArgListStatement: Statement
 
 class FunctionStatement: Statement
 {
+    bool isPrototype = false;
     string name;
     string qualifiedName;
     FunctionArgListStatement args;
