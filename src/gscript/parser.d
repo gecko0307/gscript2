@@ -50,7 +50,7 @@ string moduleToPath(string modulename, string ext)
     string fname = modulename;
     fname = replace(fname, ".", "/");
     fname = fname ~ ext;
-    return fname;	
+    return fname;
 }
 
 string pathToModule(string path)
@@ -1787,9 +1787,9 @@ bool isValidName(string s)
     // TODO: instructions
     switch (s)
     {
-        case "and", "break", "continue", "do", "else", "for", "foreach", "func", "if", 
-             "import", "in", "is", "not", "or", "self", "ref", "return", "var", "while",
-             "Float", "Array", "String", "Function", 
+        case "and", "break", "continue", "do", "else", "for", "foreach", "func", "prototype",
+             "if", "import", "in", "is", "not", "or", "self", "ref", "return", "var", "while",
+             "Float", "Array", "String", "Function",
              "true", "false", "null", "global",
              "new", "length", "assert", "array":
             return false;

@@ -528,9 +528,14 @@ class VirtualMachine
                                 traceback("Index is out of bounds: " ~ index.to!string);
                             stack.push(Dynamic(arr.asString.subString(index, index+1)));
                         }
+                        else if (arr.type == Type.Float)
+                        {
+                            stack.push(adrObj);
+                        }
                         else
+                        {
                             stack.push(Dynamic(Type.Null));
-                            //stack.push(Dynamic(arr));
+                        }
                     }
                     else if (obj.type == Type.String)
                     {
@@ -786,13 +791,6 @@ class VirtualMachine
                         stack.push(funcObj);
                     }
                     break;
-                /*
-                case "assert":
-                    auto expr = stack.pop();
-                    if (!expr.asFloat)
-                        traceback("Assertion failed");
-                    break;
-                */
 
                 default:
                     if (op.startsWith("pushfunc"))
