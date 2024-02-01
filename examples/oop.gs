@@ -17,12 +17,8 @@ func main()
     obj.foo(5);
     
     if (obj.x != null)
-    {
-        writeln(obj.x);
-    }
+        assert(obj.x == 3);
     
     if (obj.y != null)
-    {
-        writeln(obj.y);
-    }
+        assert(obj.y == 5);
 }

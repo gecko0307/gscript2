@@ -1,9 +1,9 @@
 func main()
 {
-    // arguments are implicitly passed as an array
+    // Arguments are implicitly passed as an array
     foo(1, 7, 0, 6);
 
-    // argument is passed as it is
+    // Argument is passed as is
     foo(5);
 }
 
