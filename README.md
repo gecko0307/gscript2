@@ -43,13 +43,6 @@ Running the script:
 gs script.gs
 ```
 
-Standard library
-----------------
-GScript2 comes with a tiny collection of general-purpose code written in it:
-
-* std.core - common algorithms
-* std.array - array processing functions
-
 Changes from GScript
 --------------------
 1. Import name is now filename:
@@ -119,6 +112,13 @@ func MyPrototype(x)
     return this;
 }
 ```
+
+Standard library
+----------------
+GScript2 comes with a tiny collection of general-purpose code written in it:
+
+* std.core - common algorithms
+* std.array - array processing functions
 
 Built-in host functions
 -----------------------
