@@ -3,6 +3,7 @@ func main()
     // Variable reference
     var x = 10;
     addTen(x);
+    writeln(x);
     assert(x == 20);
     
     // Function reference

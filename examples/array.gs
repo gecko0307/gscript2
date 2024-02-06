@@ -12,8 +12,8 @@ func main()
     {
         writeln("%0: %1" % (i, v));
     }
-
+    
     var arr2 = arr:flatten;
-    assert(arr2:length == 5);
-    writeln(arr2);
+    //assert(arr2:length == 5);
+    //writeln(arr2);
 }

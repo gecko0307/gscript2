@@ -491,7 +491,7 @@ class VirtualMachine
                     long adr = cast(long)stack.pop.asFloat;
                     Dynamic* adrObj = stack.getPointerToElement(basePointer + adr);
                     while (adrObj.type == Type.Reference)
-                    {    
+                    {
                         adrObj = adrObj.asRef;
                     }
                     
@@ -577,6 +577,8 @@ class VirtualMachine
 
                 case "+=": // add assign
                     auto val = stack.pop();
+                    while (val.type == Type.Reference)
+                        val = *val.asRef;
                     assert(val.type == Type.Float);
                     Dynamic adrObj = stack.pop();
                     assert(adrObj.type == Type.Reference);
@@ -587,6 +589,8 @@ class VirtualMachine
 
                 case "-=": // sub assign
                     auto val = stack.pop();
+                    while (val.type == Type.Reference)
+                        val = *val.asRef;
                     assert(val.type == Type.Float);
                     Dynamic adrObj = stack.pop();
                     assert(adrObj.type == Type.Reference);
@@ -597,6 +601,8 @@ class VirtualMachine
 
                 case "*=": // mul assign
                     auto val = stack.pop();
+                    while (val.type == Type.Reference)
+                        val = *val.asRef;
                     assert(val.type == Type.Float);
                     Dynamic adrObj = stack.pop();
                     assert(adrObj.type == Type.Reference);
@@ -607,6 +613,8 @@ class VirtualMachine
 
                 case "/=": // div assign
                     auto val = stack.pop();
+                    while (val.type == Type.Reference)
+                        val = *val.asRef;
                     assert(val.type == Type.Float);
                     Dynamic adrObj = stack.pop();
                     assert(adrObj.type == Type.Reference);
@@ -715,17 +723,17 @@ class VirtualMachine
                     Dynamic arr = stack.pop();
                     
                     while (elem.type == Type.Reference)
-                    {    
+                    {
                         elem = *elem.asRef;
                     }
                     
                     while (arr.type == Type.Reference)
-                    {    
+                    {
                         arr = *arr.asRef;
                     }
 
                     if (arr.type == Type.Array)
-                    {                           
+                    {
                         bool have = false;
 
                         foreach(v; arr.asArray)

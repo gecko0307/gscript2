@@ -86,6 +86,7 @@ class Parser
    protected:
     Module modul;
     FunctionStatement currentFunc;
+    bool lvalue = false;
 
    public:
     this(Program prog, string listing, string srcExt = ".gs", string filename = "<undefined>")
@@ -604,24 +605,6 @@ class Parser
             lex.readNext(); // pop "var"
             result = declListExpr(context);
         }
-        /*
-        else if (token == "assert")
-        {
-            lex.readNext(); // pop "assert"
-            if (lex.current == "(")
-            {
-                lex.readNext(); // pop left parenthesis
-                if (lex.current != ")")
-                    result = new AssertStatement(parseListExpression(context));
-                else
-                    error("Empty parameter list for \"assert\"");
-                lex.readNext(); // pop right parenthesis
-                term();
-            }
-            else
-                error("List expression expected after \"assert\", not \"" ~ lex.current ~ "\"");
-        }
-        */
         else if (isFunction(token)) // procedure call
         {
             result = parseProcCall(context);
@@ -803,7 +786,6 @@ class Parser
     */
     Expression parseExpression(Context context)
     {
-        //writeln("parseExpression");
         Expression result = parseAssignExpression(context);
 
         if (lex.current == "~")
@@ -817,8 +799,10 @@ class Parser
 
     Expression parseAssignExpression(Context context)
     {
-        Expression result = parseInExpression(context);
-
+        Expression result;
+        
+        result = parseInExpression(context);
+        
         if (lex.current == "=")
         {
             lex.readNext();
@@ -836,19 +820,19 @@ class Parser
     
     Expression parseInExpression(Context context)
     {
-        Expression result = parseLogicalExpression(context);       
+        Expression result = parseLogicalExpression(context);
 
         if (lex.current == "in")
         {
             lex.readNext();
-                    
+            
             auto chainExpr = cast(ChainExpression)result;
             if (chainExpr !is null)
             {
                 if (chainExpr.chain.length == 0)
                     error("Declaration is empty");
                 else if (chainExpr.chain.length == 1)
-                {             
+                {
                     string indexVarName = "__i" ~ chainExpr.chain[0].id;
                     string indexFullName = context.block.localVariable(indexVarName);
                     currentFunc.addVariable(indexFullName);
@@ -1218,7 +1202,7 @@ class Parser
         chain2 ~= context.variable;
 
         while(readingIndices)
-        {           
+        {
             if (lex.current == "[")
             {
                 inBrackets = true;
@@ -1425,7 +1409,6 @@ class Parser
             }
             else if (context.block.symbolIsVisible(varName))
             {
-                // FIXME: closure support
                 if (context.block.variable(varName) in currentFunc.address)
                     address = currentFunc.address[context.block.variable(varName)];
                 else
@@ -1523,22 +1506,6 @@ class Parser
         if (isFunction(name))
         {
             lex.readNext();
-
-            /*
-            uint address;
-            if (name == "self")
-                address = currentFunc.id.to!uint;
-            else if (modul.hasLocalFunction(name))
-                address = modul.functions[name].id.to!uint;
-            else if (modul.hasImportedFunction(name))
-                address = modul.importedFunction(name).id.to!uint;
-            else if (modul.hasQualifiedImportFunction(name))
-                address = modul.qualifiedImportedFunction(name).id.to!uint;
-            else
-                error("Cannot make a reference to non-script function \"" ~ name ~"\"");
-
-            result = new FunctionRefExpression(address, cast(uint)currentFunc.args.names.length);
-            */
             
             FunctionStatement func;
             if (name == "self")
