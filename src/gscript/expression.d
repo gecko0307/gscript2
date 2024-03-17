@@ -477,3 +477,20 @@ class FunctionRefExpression: Expression
     }
 }
 
+class DereferenceExpression: Expression
+{
+    Expression accessExpr;
+    
+    this(Expression accessExpr)
+    {
+        this.accessExpr = accessExpr;
+    }
+    
+    override string[] postfixCode()
+    {
+        string[] res;
+        res ~= accessExpr.postfixCode();
+        res ~= "deref";
+        return res;
+    }
+}

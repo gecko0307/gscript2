@@ -554,6 +554,15 @@ class VirtualMachine
                     
                     break;
 
+                case "deref": // pops reference and pushes value
+                    Dynamic obj = stack.pop();
+                    while (obj.type == Type.Reference)
+                    {
+                        obj = *obj.asRef;
+                    }
+                    stack.push(obj);
+                    break;
+
                 // TODO: rename to "="
                 case "assign": // assigns a value to a reference
                     Dynamic val = stack.pop();

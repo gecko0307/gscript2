@@ -1,10 +1,14 @@
 func main()
 {
-    // Variable reference
+    // By default all variables are passed by reference
     var x = 10;
     addTen(x);
-    writeln(x);
     assert(x == 20);
+    
+    // Dereference
+    var y = 10;
+    addTen(@y);
+    assert(y == 10);
     
     // Function reference
     var res = apply(10, ref sqr);
@@ -13,7 +17,7 @@ func main()
 
 func addTen(x)
 {
-    x = x + 10;
+    x += 10;
 }
 
 func sqr(x)

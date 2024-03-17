@@ -1329,6 +1329,36 @@ class Parser
             auto expr2 = parseExpression(context);
             result = new InlineIfExpression(conditionExpr, expr1, expr2);
         }
+        else if (token == "@")
+        {
+            lex.readNext(); //pop "@"
+            string varName = lex.current;
+            if (isIdentifier(varName))
+            {
+                lex.readNext(); //pop name
+                
+                int address;
+                if (currentFunc.argExists(varName))
+                {
+                    address = currentFunc.args.address(varName);
+                }
+                else if (context.block.symbolIsVisible(varName))
+                {
+                    if (context.block.variable(varName) in currentFunc.address)
+                        address = currentFunc.address[context.block.variable(varName)];
+                    else
+                        error("Illegal access to \"" ~ varName ~ "\"");
+                }
+                else
+                    error("Undefined variable \"" ~ varName ~ "\"");
+                
+                auto varExpr = new VariableRefExpression(varName, address);
+                auto accessExpr = parseAccessExpression(context, varExpr);
+                result = new DereferenceExpression(accessExpr);
+            }
+            else
+                error("Unexpected \"@\"");
+        }
         else if (token == "ref")
         {
             lex.readNext(); //pop "ref"
@@ -1404,7 +1434,6 @@ class Parser
             int address;
             if (currentFunc.argExists(varName))
             {
-                // FIXME: closure support
                 address = currentFunc.args.address(varName);
             }
             else if (context.block.symbolIsVisible(varName))

@@ -9,8 +9,7 @@ Features
 * Modules
 * Dynamic type system
 * Prototype-based OOP
-* Functions as first-class objects
-* Pass by value and pass by reference
+* Functions are first-class objects
 * Strings with Unicode support (UTF-8)
 
 Example
