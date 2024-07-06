@@ -112,6 +112,22 @@ func MyPrototype(x)
 }
 ```
 
+4. Global variables are implemented using a built-in dictionary `global`:
+
+```
+func main()
+{
+    global.x = 10;
+    foo();
+    writeln(global.x);
+}
+
+func foo()
+{
+    global.x *= 2;
+}
+```
+
 Standard library
 ----------------
 GScript2 comes with a tiny collection of general-purpose code written in it:

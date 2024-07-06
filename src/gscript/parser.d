@@ -1270,6 +1270,11 @@ class Parser
                     val = token;
                 result = new LiteralExpression(val);
             }
+            
+            if (token == "global")
+            {
+                result = parseAccessExpression(context, result);
+            }
         }
         else if (token == "$")
         {

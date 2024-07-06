@@ -834,7 +834,7 @@ class VirtualMachine
                         else if (val == "null")
                             stack.push(Dynamic(Type.Null));
                         else if (val == "global")
-                            stack.push(global);
+                            stack.push(Dynamic(&global));
                         else
                             traceback("Cannot push \"" ~ val ~ "\": unsupported type");
                     }
