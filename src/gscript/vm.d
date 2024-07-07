@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2020 Timur Gafarov 
+Copyright (c) 2014-2024 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -98,15 +98,12 @@ class VirtualMachine
     ulong funcPos = 0;
 
     Stack!Dynamic stack;
-    
-    Dynamic global;
 
     this(string[] code, Program prog)
     {
         this.code = code;
         this.prog = prog;
         this.stack = new Stack!Dynamic();
-        this.global = Dynamic(Type.Dictionary);
 
         // remember labels
         foreach(i, op; code)
@@ -134,11 +131,6 @@ class VirtualMachine
     void error(string message)
     {
         writefln("Runtime error: %s", message);
-
-        //version(Windows) 
-        //    std.process.system("pause");
-        //std.c.process.exit(0);
-        
         core.stdc.stdlib.exit(1);
     }
 
@@ -223,27 +215,6 @@ class VirtualMachine
             writeln("No function \"" ~ name ~ "\" found");
         }
     }
-
-    /*
-    void runFunction(ulong labelCode, Dynamic[] args = [])
-    {
-        basePointer = 0;
-        funcPos = 0;
-
-        ulong position = 0;
-        assert (labelCode in label);
-        foreach_reverse(a; args)
-            stack.push(a);
-        stack.push(Dynamic(args.length));
-        stack.push(Dynamic(position));
-        stack.push(Dynamic(basePointer));
-        stack.push(Dynamic(funcPos));
-        basePointer = stack.getPointer + 1;
-        position = label[labelCode];
-        funcPos = position;
-        run(position);
-    }
-    */
 
     void unaryOperation(string op)()
     {
@@ -834,7 +805,7 @@ class VirtualMachine
                         else if (val == "null")
                             stack.push(Dynamic(Type.Null));
                         else if (val == "global")
-                            stack.push(Dynamic(&global));
+                            stack.push(Dynamic(&prog.global));
                         else
                             traceback("Cannot push \"" ~ val ~ "\": unsupported type");
                     }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2020 Timur Gafarov 
+Copyright (c) 2014-2024 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -1651,6 +1651,7 @@ class Parser
             }
             return new BuiltInFunctionCallExpression(name, list);
         }
+        /*
         else if (name.startsWith("host.")) // built-in function
         {
             if (name == "host.")
@@ -1672,6 +1673,7 @@ class Parser
             else
                 error("Undefined host function \"" ~ name ~ "\"");
         }
+        */
         else if (context.block.symbolIsVisible(name))
         {
             auto address = currentFunc.address[context.block.variable(name)];

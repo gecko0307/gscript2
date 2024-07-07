@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2020 Timur Gafarov 
+Copyright (c) 2014-2024 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -44,9 +44,11 @@ class Program
     HostFunction[string] hostFunctions;
     Module[string] modules;
     string[] importDirs;
+    Dynamic global;
 
     this()
     {
+        this.global = Dynamic(Type.Dictionary);
     }
 
     void addImportDir(string dir)
