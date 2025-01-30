@@ -22,3 +22,10 @@ func min(a, b)
     else
         return b;
 }
+
+func clamp(x, xmin, xmax)
+{
+    if (x < xmin) return xmin;
+    else if (x > xmax) return xmax;
+    else return x;
+}
