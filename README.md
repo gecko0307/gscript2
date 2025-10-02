@@ -4,6 +4,8 @@ GScript2 is a prototype-oriented toy scripting language and accompanying VM. It 
 
 Provided code is not optimized and may contain bugs.
 
+> GScript2 is discontinued. Its successor, [GScript3](https://github.com/gecko0307/gscript3), is currently in development.
+
 Features
 --------
 * Modules
